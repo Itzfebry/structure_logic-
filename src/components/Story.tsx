@@ -1,43 +1,26 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ImagePlus } from "lucide-react";
-import { type ChangeEvent, useRef, useState } from "react";
+import { useRef } from "react";
 
-const hearts = Array.from({ length: 12 }, (_, index) => index);
-
-const PhotoFrame = ({ side, image, onUpload }: { side: "left" | "right"; image: string | null; onUpload: (event: ChangeEvent<HTMLInputElement>) => void }) => (
-  <motion.label className={`story-photo story-photo-${side}`} whileHover={{ y: -8, rotate: side === "left" ? -4 : 4 }}>
-    {image ? <img src={image} alt={`${side === "left" ? "Man" : "Woman"} in the wedding story`} /> : <><ImagePlus size={27} strokeWidth={1.4} /><span>upload {side === "left" ? "his" : "her"} photo</span></>}
-    <input type="file" accept="image/*" onChange={onUpload} />
-  </motion.label>
-);
-
-const HeartParticle = ({ index, progress }: { index: number; progress: ReturnType<typeof useScroll>["scrollYProgress"] }) => {
-  const opacity = useTransform(progress, [0, Math.max(0.2, index / hearts.length), 1], [index < 3 ? 1 : 0, 1, 1]);
-  return <motion.span className={`heart-particle particle-${index}`} style={{ opacity }}>♡</motion.span>;
-};
+const chapters = [
+  { number: "01", title: "A quiet beginning", text: "Some stories start softly, with one small moment that feels different from the rest." },
+  { number: "02", title: "Two paths align", text: "Day by day, Febry and Sasha found more reasons to keep choosing the same direction." },
+  { number: "03", title: "A promise to keep", text: "Now a new chapter opens, carried by all the little memories that brought them here." },
+];
 
 export const Story = () => {
   const storyRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: storyRef, offset: ["start start", "end end"] });
-  const leftX = useTransform(scrollYProgress, [0, 1], [0, 105]);
-  const rightX = useTransform(scrollYProgress, [0, 1], [0, -105]);
-  const heartScale = useTransform(scrollYProgress, [0, 1], [1, 1.35]);
-  const [images, setImages] = useState<{ left: string | null; right: string | null }>({ left: null, right: null });
-
-  const upload = (side: "left" | "right") => (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) setImages((current) => ({ ...current, [side]: URL.createObjectURL(file) }));
-  };
+  const progressWidth = useTransform(scrollYProgress, [0, 1], ["8%", "92%"]);
+  const stageScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.94, 1, 0.96]);
 
   return <section className="story-page" ref={storyRef}>
     <div className="story-sticky">
-      <div className="story-heading"><span className="tiny-label">A LOVE IN MOTION</span><h1>How it <em>began</em></h1><p>Bring their first chapter to life. Add a portrait for each of them, then scroll gently to watch two paths meet.</p></div>
-      <div className="story-stage">
-        <motion.div style={{ x: leftX }}><PhotoFrame side="left" image={images.left} onUpload={upload("left")} /></motion.div>
-        <motion.div className="story-heart-field" style={{ scale: heartScale }} aria-hidden="true">{hearts.map((heart) => <HeartParticle key={heart} index={heart} progress={scrollYProgress} />)}<span className="story-main-heart">♥</span></motion.div>
-        <motion.div style={{ x: rightX }}><PhotoFrame side="right" image={images.right} onUpload={upload("right")} /></motion.div>
-      </div>
-      <div className="story-caption"><span>scroll to bring them closer</span><span className="story-line" /></div>
+      <div className="story-heading"><span className="tiny-label">THEIR LITTLE STORY</span><h1>From then <em>to now</em></h1><p>Scroll through the chapters of a love that grows more beautiful with every season.</p></div>
+      <motion.div className="story-chapter-stage" style={{ scale: stageScale }}>
+        {chapters.map((chapter, index) => <motion.article className={`story-chapter story-chapter-${index + 1}`} key={chapter.number} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ amount: 0.5 }} transition={{ delay: index * 0.08 }}><span className="chapter-number">{chapter.number}</span><h2>{chapter.title}</h2><p>{chapter.text}</p><span className="chapter-mark">✦</span></motion.article>)}
+        <motion.div className="story-progress" style={{ width: progressWidth }} />
+      </motion.div>
+      <p className="story-caption">keep scrolling through their chapters</p>
     </div>
   </section>;
 };
