@@ -4,22 +4,24 @@ import { FloatingBackground } from "./components/FloatingBackground";
 import { MusicButton } from "./components/MusicButton";
 import { Navigation } from "./components/Navigation";
 import { OpeningScreen } from "./components/OpeningScreen";
-import { RSVPModal } from "./components/RSVPModal";
 import { Invitation } from "./pages/Invitation";
-import type { RSVPStatus } from "./types/invitation";
+
+export type InvitationPage = "home" | "story" | "details";
 
 export default function App() {
   const [guestName, setGuestName] = useState<string | null>(null);
   const [isOpening, setIsOpening] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [rsvpStatus, setRsvpStatus] = useState<RSVPStatus>(null);
+  const [activePage, setActivePage] = useState<InvitationPage>("home");
 
   const openInvitation = (name: string) => {
     setIsOpening(true);
-    window.setTimeout(() => { setGuestName(name); setIsOpening(false); }, 950);
+    window.setTimeout(() => { setGuestName(name); setActivePage("home"); setIsOpening(false); }, 950);
   };
 
-  const selectRSVP = (status: Exclude<RSVPStatus, null>) => setRsvpStatus(status);
+  const navigate = (page: InvitationPage) => {
+    setActivePage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
-  return <div className="app-shell"><FloatingBackground /><AnimatePresence mode="wait">{guestName ? <Invitation key="invitation" guest={{ name: guestName }} onRSVP={() => { setRsvpStatus(null); setIsModalOpen(true); }} /> : <OpeningScreen key="opening" onOpen={openInvitation} isOpening={isOpening} />}</AnimatePresence>{guestName && <><Navigation /><MusicButton /><RSVPModal isOpen={isModalOpen} status={rsvpStatus} onClose={() => setIsModalOpen(false)} onSelect={selectRSVP} /></>}</div>;
+  return <div className="app-shell"><FloatingBackground /><AnimatePresence mode="wait">{guestName ? <Invitation key={activePage} guest={{ name: guestName }} page={activePage} /> : <OpeningScreen key="opening" onOpen={openInvitation} isOpening={isOpening} />}</AnimatePresence>{guestName && <><Navigation activePage={activePage} onNavigate={navigate} /><MusicButton /></>}</div>;
 }
