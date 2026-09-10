@@ -8,6 +8,15 @@ const stars = [
   { left: "52%", top: "9%", delay: 1.8 },
 ];
 
+const blooms = [
+  { left: "7%", top: "18%", size: 170 },
+  { left: "25%", top: "72%", size: 205 },
+  { left: "58%", top: "12%", size: 180 },
+  { left: "77%", top: "64%", size: 210 },
+  { left: "42%", top: "68%", size: 170 },
+  { left: "82%", top: "28%", size: 150 },
+];
+
 export const FloatingBackground = () => (
   <div className="background-art" aria-hidden="true">
     <div className="glow glow-one" />
@@ -15,6 +24,14 @@ export const FloatingBackground = () => (
     <div className="cloud cloud-one" />
     <div className="cloud cloud-two" />
     <div className="cloud cloud-three" />
+
+    {blooms.map((bloom) => (
+      <div
+        key={`${bloom.left}-${bloom.top}`}
+        className="floral-bloom"
+        style={{ left: bloom.left, top: bloom.top, width: `${bloom.size}px`, height: `${bloom.size}px` }}
+      />
+    ))}
 
     <motion.div
       className="kirby-background"
