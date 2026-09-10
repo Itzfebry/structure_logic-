@@ -9,14 +9,14 @@ export const GuestNameInput = ({ onSubmit }: GuestNameInputProps) => {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    onSubmit(name.trim() || "Someone Special");
+    onSubmit(name.trim() || "Seseorang yang Istimewa");
   };
 
   return (
     <form className="guest-form" onSubmit={handleSubmit}>
-      <label htmlFor="guest-name">Your lovely name</label>
-      <input id="guest-name" value={name} onChange={(event) => setName(event.target.value)} placeholder="Enter your name" autoComplete="name" />
-      <button className="primary-button open-button" type="submit">Open invitation <span>♡</span></button>
+      <label htmlFor="guest-name">Nama Anda</label>
+      <input id="guest-name" value={name} onChange={(event) => setName(event.target.value)} placeholder="Masukkan nama Anda" autoComplete="name" />
+      <button className="primary-button open-button" type="submit">Buka undangan <span>♡</span></button>
     </form>
   );
 };

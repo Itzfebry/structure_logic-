@@ -17,7 +17,7 @@ export default function App() {
   const [activePage, setActivePage] = useState<InvitationPage>("home");
 
   useEffect(() => {
-    document.title = "Our Weddings F&S";
+    document.title = "Pernikahan F&S";
     let favicon = document.querySelector<HTMLLinkElement>('link[rel="icon"]');
     if (!favicon) {
       favicon = document.createElement("link");

@@ -15,6 +15,22 @@ export const FloatingBackground = () => (
     <div className="cloud cloud-one" />
     <div className="cloud cloud-two" />
     <div className="cloud cloud-three" />
+
+    <motion.div
+      className="kirby-background"
+      animate={{
+        y: [0, -20, 0, 12, 0],
+        x: [0, 12, -8, 10, 0],
+        rotate: [0, 8, -6, 5, 0],
+        opacity: [0.16, 0.34, 0.2, 0.3, 0.18],
+      }}
+      transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+    >
+      <div className="glass-orb glass-orb-one" />
+      <div className="glass-orb glass-orb-two" />
+      <div className="glass-orb glass-orb-three" />
+    </motion.div>
+
     {stars.map((star) => (
       <motion.span
         className="star"
