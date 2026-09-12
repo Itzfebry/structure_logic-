@@ -142,5 +142,5 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
 
-# Private wedding image assets
-src/components/images/
+# # Private wedding image assets
+# src/components/images/
