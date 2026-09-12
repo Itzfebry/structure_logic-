@@ -12,3 +12,13 @@ declare module "*.jpeg" {
   const imageSource: string;
   export default imageSource;
 }
+
+declare module "*.svg" {
+  const imageSource: string;
+  export default imageSource;
+}
+
+declare module "*.mp3" {
+  const audioSource: string;
+  export default audioSource;
+}
